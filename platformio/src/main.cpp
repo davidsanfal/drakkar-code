@@ -6,7 +6,7 @@ int potentiometer_pin = A0;
 int currentSensor_pin = A1;
 int EMGFront_pin = A2;
 int EMGBack_pin = A3;
-int endstop_pin = 11;
+int endstop_pin = 2; //2 or 3
 int clockwise_pin = 8;
 int counterclockwise_pin = 9;
 int speed_pin = 10;
@@ -19,7 +19,12 @@ Drakkar drakkar(potentiometer_pin,
                 EMGFront_pin,
                 EMGBack_pin);
 
+void endstop(){
+  drakkar.endstop();
+}
+
 void setup() {
+  attachInterrupt(digitalPinToInterrupt(endstop_pin), endstop, CHANGE);
   Serial.begin(9600);
   pinMode(potentiometer_pin, INPUT);
   pinMode(currentSensor_pin, INPUT);
@@ -30,7 +35,7 @@ void setup() {
 }
 
 void loop() {
-  drakkar.run();
+  drakkar.debug();
   delay(100);
 
 }

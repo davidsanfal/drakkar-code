@@ -1,4 +1,5 @@
 #include "drakkar.h"
+#include "config.h"
 
 
 Drakkar::Drakkar(int potentiometer_pin, int currentSensor_pin, int endstop_pin,
@@ -13,9 +14,12 @@ Drakkar::Drakkar(int potentiometer_pin, int currentSensor_pin, int endstop_pin,
   this->EMGFront_pin = EMGFront_pin;
   this->EMGBack_pin = EMGBack_pin;
   this->pid.Initialize();
+  this->lastTime = 0;
+  this->endstop_status = digitalRead(this->endstop_pin);
+  this->output = 0;
 }
 
-void Drakkar::run(){
+void Drakkar::debug(){
   Serial.print(analogRead(this->potentiometer_pin));
   Serial.print(" , ");
   Serial.print(digitalRead(this->endstop_pin));
@@ -23,7 +27,46 @@ void Drakkar::run(){
   Serial.print(analogRead(this->EMGFront_pin));
   Serial.print(" , ");
   Serial.print(analogRead(this->EMGBack_pin));
-  float output = this->pid.Compute(500, analogRead(this->potentiometer_pin));
+  this->output = this->pid.Compute(500, analogRead(this->potentiometer_pin));
   Serial.print(" , ");
-  Serial.println(output);
+  Serial.println(this->output);
+}
+
+int Drakkar::run(){
+  unsigned long now = millis();
+  int position = (analogRead(this->potentiometer_pin)/AnalogResolution) * PotentiometerLong;
+  EMGInfo emg_info = this->readEMG();
+  double new_position = (double)position +((double)(MaxSpeed*emg_info.speed) * (double)(now-lastTime));
+  this->output = this->pid.Compute(new_position, position/AnalogResolution)*AnalogResolution;
+  this->writeMotor();
+  this->lastTime = now;
+  return 0;
+}
+
+void Drakkar::writeMotor(){
+  this->endstop_status = digitalRead(this->endstop_pin);
+  digitalWrite(this->up_pin, (int)(this->output > 0));
+  digitalWrite(this->down_pin, (int)(this->output < 0));
+  if(this->output > 0) this->output = this->output * this->endstop_status;
+  analogWrite(this->speed_pin, abs(this->output));
+}
+
+void Drakkar::endstop(){
+  this->writeMotor();
+}
+
+EMGInfo Drakkar::readEMG(){
+  int quadriceps = analogRead(this->EMGFront_pin);
+  int hamstring = analogRead(this->EMGFront_pin);
+
+  float speed = (quadriceps - hamstring) / AnalogResolution;
+
+  float power = 0.0;
+  if((quadriceps > EMGMin) or (hamstring > EMGMin)){
+    if (speed >= 0.0) power = quadriceps/AnalogResolution;
+    else power = hamstring/AnalogResolution;
+  }
+
+  EMGInfo info = {power, speed};
+  return info;
 }
