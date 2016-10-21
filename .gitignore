@@ -6,6 +6,7 @@ platformio/.pioenvs
 platformio/.clang_complete
 platformio/.gcc-flags.json
 platformio/.piolibdeps
+!platformio
 
 #################
 # PYTHON IGNORE #
@@ -29,6 +30,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!platformio/lib
 lib64/
 parts/
 sdist/

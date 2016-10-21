@@ -1,10 +1,21 @@
 #include "drakkar.h"
-#include "config.h"
+#include <Arduino.h>
+
+#define EMGMin 1
+#define AnalogResolution 1023
+#define MaxSpeed 20
+#define PotentiometerLong 100
 
 
 Drakkar::Drakkar(int potentiometer_pin, int currentSensor_pin, int endstop_pin,
                  int up_pin, int down_pin, int speed_pin,
                  int EMGFront_pin, int EMGBack_pin): pid(1,0,0,0,1024){
+  pinMode(potentiometer_pin, INPUT);
+  pinMode(currentSensor_pin, INPUT);
+  pinMode(endstop_pin, INPUT);
+  pinMode(up_pin, OUTPUT);
+  pinMode(down_pin, OUTPUT);
+  pinMode(speed_pin, OUTPUT);
   this->potentiometer_pin = potentiometer_pin;
   this->currentSensor_pin = currentSensor_pin;
   this->endstop_pin = endstop_pin;

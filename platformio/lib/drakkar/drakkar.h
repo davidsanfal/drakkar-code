@@ -1,4 +1,4 @@
-#include "pid.h"
+#include <pid.h>
 
 struct EMGInfo {
   float power;
@@ -7,12 +7,13 @@ struct EMGInfo {
 
 class Drakkar{
 public:
-  Drakkar (int,int,int,int,int,int,int,int);
+  Drakkar(int,int,int,int,int,int,int,int);
   void debug();
   int run();
   void endstop();
   EMGInfo readEMG();
   void writeMotor();
+  int get_endstop_pin(){return this->endstop_pin;}
 private:
   int potentiometer_pin;
   int currentSensor_pin;
