@@ -7,9 +7,7 @@
 Drakkar drakkar(A0, A1, 2, 4, 5, 3, A2, A3);
 unsigned long step = 0;
 
-void endstop(){
-  drakkar.endstop();
-}
+void endstop() {drakkar.endstop();}
 
 void setup() {
   attachInterrupt(digitalPinToInterrupt(drakkar.get_endstop_pin()), endstop, CHANGE);
@@ -17,10 +15,8 @@ void setup() {
 }
 
 void loop() {
-
   if(step < millis()){
     drakkar.debug();
     step = (unsigned long)stepTime + millis();
   }
-
 }

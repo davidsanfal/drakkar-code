@@ -1,9 +1,6 @@
 #include <pid.h>
+#include <legEMG.h>
 
-struct EMGInfo {
-  float power;
-  float speed;
-};
 
 class Drakkar{
 public:
@@ -11,7 +8,6 @@ public:
   void debug();
   int run();
   void endstop();
-  EMGInfo readEMG();
   void writeMotor();
   unsigned int get_endstop_pin(){return this->endstop_pin;}
 private:
@@ -21,9 +17,8 @@ private:
   unsigned int up_pin;
   unsigned int down_pin;
   unsigned int speed_pin;
-  unsigned int EMGFront_pin;
-  unsigned int EMGBack_pin;
   PID pid;
+  LegEMG leg_EMG;
   unsigned long lastTime;
   int endstop_status;
   float output;
