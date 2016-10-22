@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/davidsanfal/drakkar-code.svg?branch=develop)](https://travis-ci.org/davidsanfal/drakkar-code)
 
-![](doc/logo/drakkar.png)
+![](doc/logo/drakkar-code.png)
 
 **[Drakkar's code](https://github.com/davidsanfal/drakkar)**
 
