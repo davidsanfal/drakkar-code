@@ -15,14 +15,14 @@ public:
   void writeMotor();
   int get_endstop_pin(){return this->endstop_pin;}
 private:
-  int potentiometer_pin;
-  int currentSensor_pin;
-  int endstop_pin;
-  int up_pin;
-  int down_pin;
-  int speed_pin;
-  int EMGFront_pin;
-  int EMGBack_pin;
+  unsigned int potentiometer_pin;
+  unsigned int currentSensor_pin;
+  unsigned int endstop_pin;
+  unsigned int up_pin;
+  unsigned int down_pin;
+  unsigned int speed_pin;
+  unsigned int EMGFront_pin;
+  unsigned int EMGBack_pin;
   PID pid;
   unsigned long lastTime;
   int endstop_status;

@@ -38,16 +38,15 @@ void Drakkar::debug(){
   Serial.print(analogRead(this->EMGFront_pin));
   Serial.print(" , ");
   Serial.print(analogRead(this->EMGBack_pin));
-  this->output = this->pid.Compute(500, analogRead(this->potentiometer_pin));
   Serial.print(" , ");
   Serial.println(this->output);
 }
 
 int Drakkar::run(){
   unsigned long now = millis();
-  int position = (analogRead(this->potentiometer_pin)/AnalogResolution) * PotentiometerLong;
+  double position = (analogRead(this->potentiometer_pin)/AnalogResolution) * PotentiometerLong;
   EMGInfo emg_info = this->readEMG();
-  double new_position = (double)position +((double)(MaxSpeed*emg_info.speed) * (double)(now-lastTime));
+  double new_position = position +((double)(MaxSpeed*emg_info.speed) * (double)(now-lastTime));
   this->output = this->pid.Compute(new_position, position/AnalogResolution)*AnalogResolution;
   this->writeMotor();
   this->lastTime = now;
@@ -63,6 +62,7 @@ void Drakkar::writeMotor(){
 }
 
 void Drakkar::endstop(){
+  Serial.print("Endstop Interrupt");
   this->writeMotor();
 }
 
