@@ -12,7 +12,7 @@ void endstop(){
 }
 
 void setup() {
-  attachInterrupt(digitalPinToInterrupt((unsigned int)drakkar.get_endstop_pin()), endstop, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(drakkar.get_endstop_pin()), endstop, CHANGE);
   Serial.begin(9600);
 }
 

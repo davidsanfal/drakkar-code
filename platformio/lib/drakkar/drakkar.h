@@ -13,7 +13,7 @@ public:
   void endstop();
   EMGInfo readEMG();
   void writeMotor();
-  int get_endstop_pin(){return this->endstop_pin;}
+  unsigned int get_endstop_pin(){return this->endstop_pin;}
 private:
   unsigned int potentiometer_pin;
   unsigned int currentSensor_pin;
