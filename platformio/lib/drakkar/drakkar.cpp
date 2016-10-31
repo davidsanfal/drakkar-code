@@ -45,7 +45,6 @@ int Drakkar::run(){
   EMGInfo emg_info = this->leg_EMG.read();
   double new_position = position +((double)(MaxSpeed*emg_info.speed) * (double)(now-lastTime));
   this->output = this->pid.Compute(new_position, position/AnalogResolution)*AnalogResolution;
-  this->writeMotor();
   this->lastTime = now;
   return 0;
 }
